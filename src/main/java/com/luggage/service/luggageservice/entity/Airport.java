@@ -1,14 +1,18 @@
 package com.luggage.service.luggageservice.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.io.Serializable;
 import java.util.Objects;
 import java.util.Set;
 
 @Entity
 @Table(name="airport")
-public class Airport {
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+public class Airport implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,20 +22,26 @@ public class Airport {
     @NotBlank
     String name;
     @NotBlank
-    String location;
-
-
+    String city;
+    @NotBlank
+    String country;
 
     @OneToMany(mappedBy = "airport", cascade = CascadeType.ALL)
     private Set<Luggage> luggages;
 
+    @NotBlank
+    @Enumerated(EnumType.STRING)
+    private IATA iataCode;
+
     public Airport() {
     }
 
-    public Airport(Integer airportId ,String name, String location) {
+    public Airport(Integer airportId ,String name, String city, String country, IATA iataCode) {
         this.airportId = airportId;
         this.name = name;
-        this.location = location;
+        this.city=city;
+        this.country= country;
+        this.iataCode=iataCode;
 
     }
 
@@ -50,29 +60,29 @@ public class Airport {
         this.name = name;
     }
 
-    public String getLocation() {
-        return location;
+
+    public String getCity() {
+        return city;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public void setCity(String city) {
+        city = city;
     }
 
-
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Airport airport = (Airport) o;
-        return Objects.equals(airport, airport.airportId) &&
-                Objects.equals(name, airport.name) &&
-                Objects.equals(location, airport.location);
+    public String getCountry() {
+        return country;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(airportId, name, location);
+    public void setCountry(String country) {
+        country = country;
+    }
+
+    public IATA getIataCode() {
+        return iataCode;
+    }
+
+    public void setIataCode(IATA iataCode) {
+        this.iataCode = iataCode;
     }
 
     public Set<Luggage> getLuggages() {
@@ -85,11 +95,28 @@ public class Airport {
 
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Airport airport = (Airport) o;
+        return Objects.equals(airport, airport.airportId) &&
+                Objects.equals(name, airport.name) &&
+                Objects.equals(city, airport.city)&&
+                Objects.equals(country, airport.country);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(airportId, name, city,country);
+    }
+
+    @Override
     public String toString() {
         return "Airport{" +
                 "id=" + airportId +
                 ", name='" + name + '\'' +
-                ", location='" + location + '\'' +
+                ", city='" + city + '\'' +
+                ", country='" + country + '\'' +
              //  ", luggage='" + luggage.getLuggageIdId() + '\'' +
                 '}';
     }

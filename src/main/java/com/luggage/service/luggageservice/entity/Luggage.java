@@ -1,5 +1,7 @@
 package com.luggage.service.luggageservice.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
@@ -19,7 +21,7 @@ public class Luggage {
     //ev ett till id?
     @NotBlank
     private String shelf;
-    //eventuellt
+
     //String date;
    // private String dateAndTime;
 
@@ -29,6 +31,7 @@ public class Luggage {
 
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="fk_airport_id")
+    @JsonIgnore
     private Airport airport;
 
     //hibernate
