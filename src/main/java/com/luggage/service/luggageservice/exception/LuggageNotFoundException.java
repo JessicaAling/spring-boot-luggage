@@ -4,19 +4,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(code = HttpStatus.BAD_REQUEST)
-public class AirportNotFoundException extends RuntimeException {
+public class LuggageNotFoundException extends RuntimeException{
 
-    public AirportNotFoundException(String message, Throwable cause) {
+    public LuggageNotFoundException(String message, Throwable cause) {
         super(message, cause);
     }
-
-    public AirportNotFoundException() {
-
-    }
-
-    public AirportNotFoundException(String message) {
-    }
-
-
 }
-

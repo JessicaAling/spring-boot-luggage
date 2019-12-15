@@ -1,12 +1,15 @@
 package com.luggage.service.luggageservice.controller;
 
 import com.luggage.service.luggageservice.dataService.LuggageServiceImpl;
-import com.luggage.service.luggageservice.entity.Luggage;
+import com.luggage.service.luggageservice.model.Luggage;
+import com.luggage.service.luggageservice.exception.AirportNotFoundException;
+import com.luggage.service.luggageservice.repository.AirportRepository;
 import com.luggage.service.luggageservice.repository.LuggageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,72 +18,66 @@ import java.util.Optional;
 public class LuggageController {
 
     @Autowired
-    LuggageRepository luggageRepository;
-
+    private LuggageRepository luggageRepository;
 
     @Autowired
-    LuggageServiceImpl luggageService;
+    private LuggageServiceImpl luggageService;
 
-    @GetMapping(path = "/testar")
-    @ResponseBody
-    public List<Luggage> findAll() {
+    @Autowired
+    private AirportRepository airportRepository;
 
-        return luggageRepository.findAll();
-
-    }
-
-    @GetMapping(path = "/all")
+    //get all luggage
+    @GetMapping(path = "/allLuggage")
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
     public Iterable getAll() {
-
         return luggageService.findAllLuggage();
 
     }
 
-    @GetMapping(path = "id/{id}")
+    //find luggage by id
+    @GetMapping(path = "findLuggage/{id}")
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
-    public Optional<Luggage> luggageId(@PathVariable Integer id) {
+    public Optional<Luggage> getLuggageById(@PathVariable Integer id) {
 
         return luggageService.findLuggageById(id);
 
     }
 
+    //find luggage by shelf
     @GetMapping(path = "shelf/{shelf}")
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
     public Optional<Luggage> luggageShelf(@PathVariable String shelf) {
-
         return luggageService.findLuggageByShelf(shelf);
 
     }
 
-   @GetMapping(path = "comment/{comment}")
-    @ResponseBody
-    @ResponseStatus(HttpStatus.OK)
-    public List<Luggage> luggageComment(@PathVariable String comment) {
-        return luggageService.findLuggageByComment(comment);
+    @PostMapping(path="/l/{airportId}/luggage",consumes = "application/json", produces = "application/json")
+    public ResponseEntity<Luggage> insertNewLuggage(@PathVariable(value = "airportId") Integer airportId,
+                                                   @Valid @RequestBody Luggage luggage)
+    {
+        Luggage luggage1 = luggageService.insertLuggage(airportId,luggage);
+        return ResponseEntity.ok(luggage1);
+    }
+    @PostMapping(path="/insertLuggage/{airportId}/luggage",consumes = "application/json", produces = "application/json")
+    public Luggage createLuggage(@PathVariable (value = "airportId") Integer airportId,
+                                 @Valid @RequestBody Luggage luggage) {
+        return airportRepository.findById(airportId).map(a -> {
+            luggage.setAirports(a);
+            luggage.setLuggageId(luggage.getLuggageId());
+            return luggageRepository.saveAndFlush(luggage);
+        }).orElseThrow(()-> new AirportNotFoundException());
 
     }
-
-    @GetMapping(path = "luggage/{id}")
+    //find luggage by luggage id and then show
+    @GetMapping(path = "findLuggage/airportId/{id}")
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
-    public Optional<Luggage> luggageAirport(@PathVariable String id) {
-
-        return luggageService.findLuggageByAirport(id);
+    public Optional<Luggage> findLuggageByAirportId(@PathVariable Integer id) {
+        return luggageService.findAirportByLuggageById(id);
 
     }
-
-    //getAllLuggagge
-    //findById
-    //findLuggageByShelf
-    //insertLuggage
-    //updateLuggage
-    //deleteLugggae
-
-    //find luggage by airport
-
 
 }
