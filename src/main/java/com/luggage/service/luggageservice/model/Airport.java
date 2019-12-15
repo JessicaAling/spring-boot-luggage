@@ -1,4 +1,4 @@
-package com.luggage.service.luggageservice.entity;
+package com.luggage.service.luggageservice.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -15,7 +15,7 @@ import java.util.Set;
 public class Airport implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    // @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="airport_id")
     Integer airportId;
 
@@ -36,12 +36,18 @@ public class Airport implements Serializable {
     public Airport() {
     }
 
-    public Airport(Integer airportId ,String name, String city, String country, IATA iataCode) {
-        this.airportId = airportId;
+    public Airport(String name, String city, String country, IATA iataCode) {
         this.name = name;
         this.city=city;
         this.country= country;
         this.iataCode=iataCode;
+
+    }
+    public Airport(String name, String city, String country) {
+        this.name = name;
+        this.city=city;
+        this.country= country;
+
 
     }
 
@@ -117,7 +123,7 @@ public class Airport implements Serializable {
                 ", name='" + name + '\'' +
                 ", city='" + city + '\'' +
                 ", country='" + country + '\'' +
-             //  ", luggage='" + luggage.getLuggageIdId() + '\'' +
+                //  ", luggage='" + luggage.getLuggageIdId() + '\'' +
                 '}';
     }
 }
