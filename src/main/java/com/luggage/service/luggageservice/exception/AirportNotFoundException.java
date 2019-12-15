@@ -17,7 +17,6 @@ public class AirportNotFoundException extends RuntimeException {
     public AirportNotFoundException(String message) {
     }
 
-   // public AirportNotFoundException(String message, String no_city_found) {
-    //}
+
 }
 

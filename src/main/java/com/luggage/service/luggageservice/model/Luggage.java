@@ -1,21 +1,17 @@
-package com.luggage.service.luggageservice.entity;
+package com.luggage.service.luggageservice.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.time.LocalDate;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
 //@Table(name = "luggage")
 public class Luggage {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    //@SequenceGenerator(name = "", sequenceName = "cr_id_sequence", allocationSize = 1)
-    //@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "crIdSequence")
+   // @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="luggage_id")
     private Integer luggageId;
     //ev ett till id?
@@ -34,19 +30,24 @@ public class Luggage {
     @JsonIgnore
     private Airport airport;
 
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="fk_owner_id")
+    @JsonIgnore
+    private Owner luggageOwner;
+
     //hibernate
     public Luggage() {
     }
 
-    public Luggage(String shelf, String comment, Airport airport) {
-        //this.id = id;
+    public Luggage(String shelf, String comment, Airport airport, Owner luggageOwner) {
         this.shelf = shelf;
         //this.dateAndTime = dateAndTime;
         this.comment = comment;
         this.airport=airport;
+        this.luggageOwner=luggageOwner;
     }
 
-    public Integer getLuggageIdId() {
+    public Integer getLuggageId() {
         return luggageId;
     }
 
@@ -101,6 +102,13 @@ public class Luggage {
         this.airport = airport;
     }
 
+    public Owner getLuggageOwner() {
+        return luggageOwner;
+    }
+
+    public void setLuggageOwner(Owner luggageOwner) {
+        this.luggageOwner = luggageOwner;
+    }
 
     @Override
     public String toString() {
