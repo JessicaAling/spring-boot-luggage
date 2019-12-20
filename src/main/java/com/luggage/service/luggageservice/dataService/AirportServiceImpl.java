@@ -13,13 +13,10 @@ import java.util.List;
 @Service
 public class AirportServiceImpl {
 
-    @Autowired
     private AirportRepository airportRepository;
 
-
-
-    public AirportServiceImpl() {
-        //this.airportRepository = airportRepository; AirportRepository airportRepository
+    public AirportServiceImpl(AirportRepository airportRepository) {
+        this.airportRepository = airportRepository;
     }
 
     public List findAll() {
@@ -51,7 +48,7 @@ public class AirportServiceImpl {
     public List<Airport> findAirportByCity(String city) throws AirportNotFoundException {
 
         List<Airport> airportCity = airportRepository.findByCity(city);
-        // Airport airport
+
         if (airportCity.isEmpty() || airportCity.equals("null")) {
             throw new AirportNotFoundException();
         }

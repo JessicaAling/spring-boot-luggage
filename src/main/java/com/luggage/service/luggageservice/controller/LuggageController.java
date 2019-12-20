@@ -86,13 +86,6 @@ public class LuggageController {
         return  luggageService.removeLuggage(luggage);
     }
 
-    //insert luggage with airport id and owner id , but save owner if not exist
-    @PostMapping(path = "/insert/{airportId}/luggage", consumes = "application/json", produces = "application/json")
-    public Luggage createLuggageAndOwner(@PathVariable(value = "airportId") Integer airportId,
-                                         @Valid @RequestBody Luggage luggage) {
-        return luggageService.insertNew(airportId,luggage);
-
-    }
 }
 
 

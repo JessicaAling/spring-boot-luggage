@@ -19,13 +19,13 @@ import java.util.Optional;
 //@Transactional
 @Service
 public class LuggageServiceImpl {
-    // @Autowired
+
     private LuggageRepository luggageRepository;
-    //@Autowired
+
     private AirportRepository airportRepository;
-    //@Autowired
+
     private OwnerRepository ownerRepository;
-    //@Autowired
+
     private OwnerServiceImpl ownerService;
 
     public LuggageServiceImpl(LuggageRepository luggageRepository, AirportRepository airportRepository, OwnerRepository ownerRepository, OwnerServiceImpl ownerService) {
@@ -34,10 +34,6 @@ public class LuggageServiceImpl {
         this.ownerRepository = ownerRepository;
         this.ownerService = ownerService;
     }
-    // public LuggageServiceImpl(){
-
-    //}
-
 
     public List<Luggage> findAllLuggage() {
         List<Luggage> luggages = luggageRepository.findAll();
@@ -104,25 +100,6 @@ public class LuggageServiceImpl {
         updateLuggage.setShelf(luggage.getShelf());
         updateLuggage = luggageRepository.save(updateLuggage);
         return updateLuggage;
-    }
-
-//remove
-    public Luggage insertNew(Integer airportId, Luggage luggage) {
-
-        Airport airport = airportRepository.findByAirportId(airportId);
-
-        if (airport == null || airport.equals(" ")) {
-            throw new OwnerNotFoundException("No airport found for this id");
-        }
-
-        airport.addLuggage(luggage);
-        airportRepository.save(airport);
-
-
-        return luggageRepository.saveAndFlush(luggage);
-        //  luggage.setAirports(airport);
-        //luggage.setLuggageOwner(ownerSave);
-
     }
 
 }

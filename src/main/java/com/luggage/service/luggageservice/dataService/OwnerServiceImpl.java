@@ -15,22 +15,18 @@ import org.springframework.stereotype.Service;
 @Service
 public class OwnerServiceImpl {
 
-    @Autowired
     private OwnerRepository ownerRepository;
-    @Autowired
+
     private LuggageRepository luggageRepository;
-    @Autowired
+
     private AirportRepository airportRepository;
 
-    public OwnerServiceImpl(){
 
-    }
-
-   /* public OwnerServiceImpl(OwnerRepository ownerRepository, LuggageRepository luggageRepository, AirportRepository airportRepository) {
+    public OwnerServiceImpl(OwnerRepository ownerRepository, LuggageRepository luggageRepository, AirportRepository airportRepository) {
         this.ownerRepository = ownerRepository;
         this.luggageRepository = luggageRepository;
         this.airportRepository = airportRepository;
-    }*/
+    }
 
     public Owner findOwner(String firstName, String surName) {
         Owner owner = ownerRepository.findOwner(firstName, surName);
