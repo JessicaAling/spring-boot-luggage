@@ -15,21 +15,22 @@ import java.util.Set;
 public class Airport implements Serializable {
 
     @Id
-    // @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="airport_id")
-    Integer airportId;
+    private Integer airportId;
 
-    @NotBlank
-    String name;
-    @NotBlank
-    String city;
-    @NotBlank
-    String country;
+    @NotBlank(message = "airport name can not be empty")
+    private String name;
+
+    @NotBlank(message = "city can not be empty")
+    private String city;
+
+    @NotBlank(message = "country can not be empty")
+    private String country;
 
     @OneToMany(mappedBy = "airport", cascade = CascadeType.ALL)
     private Set<Luggage> luggages;
 
-    @NotBlank
+    @NotBlank(message = "IATA can not be empty")
     @Enumerated(EnumType.STRING)
     private IATA iataCode;
 
@@ -50,7 +51,6 @@ public class Airport implements Serializable {
 
 
     }
-
 
     public Integer getAirportId() { return airportId; }
 
@@ -98,6 +98,15 @@ public class Airport implements Serializable {
     public void setLuggages(Set<Luggage> luggages) {
         this.luggages = luggages;
     }
+    public void addLuggage(Luggage luggage) {
+        luggages.add(luggage);
+        luggage.setAirports(this);
+    }
+
+    public void removeLuggage(Luggage luggage) {
+        luggages.remove(luggage);
+        luggage.setLuggageOwner(null);
+    }
 
 
     @Override
@@ -123,7 +132,7 @@ public class Airport implements Serializable {
                 ", name='" + name + '\'' +
                 ", city='" + city + '\'' +
                 ", country='" + country + '\'' +
-                //  ", luggage='" + luggage.getLuggageIdId() + '\'' +
+                 ", luggage='" + luggages + '\'' +
                 '}';
     }
 }

@@ -9,4 +9,6 @@ public class LuggageNotFoundException extends RuntimeException{
     public LuggageNotFoundException(String message, Throwable cause) {
         super(message, cause);
     }
+    public LuggageNotFoundException(String s) {
+    }
 }

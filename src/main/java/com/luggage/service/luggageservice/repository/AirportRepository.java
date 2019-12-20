@@ -33,8 +33,8 @@ public interface AirportRepository  extends JpaRepository<Airport,Integer> {
     @Query("SELECT l FROM Luggage l inner join l.airport al where al.name =:name")
     List<Luggage> findAllLuggageByAirportName(String name);
 
-    @Query("SELECT l FROM Luggage l inner join l.airport al where l.id = :id and al.name =:name")
-    List<Luggage> findAllLuggageByAirportNameAndId(int id, String name);
-
+    @Query("SELECT l FROM Luggage l inner join l.airport al where l.id = :id")
+    List<Luggage> findAllLuggageByAirportNameAndId(int id);
+//and al.name =:name"
 
 }

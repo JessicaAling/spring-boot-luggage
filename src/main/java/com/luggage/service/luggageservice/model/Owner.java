@@ -3,6 +3,7 @@ package com.luggage.service.luggageservice.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.Objects;
 import java.util.Set;
 
@@ -13,13 +14,15 @@ public class Owner {
     @Id
     @Column(name="owner_id")
     private Integer ownerId;
-    //@Column(name="")
-    private String firstName;
-   // @Column(name="owner_id")
-    private String lastName;
-    //@Column(name="owner_id")
-    private String phoneNumber;
 
+    @NotBlank(message = "Name can not be empty")
+    private String firstName;
+
+    @NotBlank(message = "Surname can not be empty")
+    private String surName;
+
+    @NotBlank(message = "phone number can not be empty")
+    private String phoneNumber;
 
     @OneToMany(mappedBy = "luggageOwner", cascade = CascadeType.ALL)
     private Set<Luggage> luggages;
@@ -28,9 +31,9 @@ public class Owner {
 
     }
 
-    public Owner(String firstName, String lastName, String phoneNumber, Set<Luggage> luggages) {
+    public Owner(String firstName, String surName, String phoneNumber, Set<Luggage> luggages) {
         this.firstName = firstName;
-        this.lastName = lastName;
+        this.surName = surName;
         this.phoneNumber = phoneNumber;
         this.luggages = luggages;
     }
@@ -51,12 +54,12 @@ public class Owner {
         this.firstName = firstName;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getSurName() {
+        return surName;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setSurName(String lastName) {
+        this.surName = lastName;
     }
 
     public String getPhoneNumber() {
@@ -75,6 +78,16 @@ public class Owner {
         this.luggages = luggages;
     }
 
+    public void addLuggage(Luggage luggage) {
+        luggages.add(luggage);
+        luggage.setLuggageOwner(this);
+    }
+
+    public void removeLuggage(Luggage luggage) {
+        luggages.remove(luggage);
+        luggage.setLuggageOwner(null);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -82,14 +95,14 @@ public class Owner {
         Owner that = (Owner) o;
         return Objects.equals(ownerId, that.ownerId) &&
                 Objects.equals(firstName, that.firstName) &&
-                Objects.equals(lastName, that.lastName) &&
+                Objects.equals(surName, that.surName) &&
                 Objects.equals(phoneNumber, that.phoneNumber) &&
                 Objects.equals(luggages, that.luggages);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(ownerId, firstName, lastName, phoneNumber, luggages);
+        return Objects.hash(ownerId, firstName, surName, phoneNumber, luggages);
     }
 
     @Override
@@ -97,7 +110,7 @@ public class Owner {
         return "LuggageOwner{" +
                 " ownerId=" +  ownerId +
                 ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
+                ", lastName='" + surName + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
               //  ", luggages=" + luggages +
                 '}';

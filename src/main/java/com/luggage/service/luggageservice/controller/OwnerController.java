@@ -1,7 +1,9 @@
 package com.luggage.service.luggageservice.controller;
 
 import com.luggage.service.luggageservice.dataService.OwnerServiceImpl;
+import com.luggage.service.luggageservice.model.Luggage;
 import com.luggage.service.luggageservice.model.Owner;
+import com.luggage.service.luggageservice.repository.LuggageRepository;
 import com.luggage.service.luggageservice.repository.OwnerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,61 +17,54 @@ import java.util.Optional;
 public class OwnerController {
 
     @Autowired
-    OwnerRepository ownerRepository;
+    private OwnerRepository ownerRepository;
 
     @Autowired
-    OwnerServiceImpl ownerService;
+    private OwnerServiceImpl ownerService;
+
+    @Autowired
+    private LuggageRepository repository;
 
     // get owner by id
     @GetMapping(path = "id/{id}")
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
-    public Optional<Owner> getLuggageById(@PathVariable Integer id) {
+    public Optional<Owner> getOwnerById(@PathVariable Integer id) {
         return ownerRepository.findById(id);
-
     }
 
     //get owner by name
-    @GetMapping(path = "name/{firstName}")
+    @GetMapping(path = "name/{firstName}/surname/{surName}")
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
-    public Owner getOwner(@PathVariable String firstName) {
-
-        return ownerService.findOwner(firstName);
+    public Owner getOwnerByName(@PathVariable String firstName,@PathVariable String surName) {
+        return ownerService.findOwner(firstName, surName);
 
     }
 
     //post owner
     @PostMapping(path = "/insert/owner", consumes = "application/json", produces = "application/json")
     public @Valid Owner insertNewOwner(@Valid @RequestBody Owner owner) {
-        return ownerRepository.saveAndFlush(owner);
+        return ownerService.saveNewOwner(owner);
+
     }
+
 
     //put
     @PutMapping(path = "/update/owner", consumes = "application/json", produces = "application/json")
-    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
+    @ResponseStatus(code = HttpStatus.CREATED)
     public @ResponseBody
     Owner updateOwner(@RequestBody Owner owner) {
         return ownerService.updateOwnerInformation(owner);
 
     }
 
-    //delete
+    //delete owner with luggages
     @DeleteMapping(path = "/delete/owner", consumes = "application/json", produces = "application/json")
-    public @ResponseBody
-    Owner deleteOwner(@RequestBody Owner owner) {
+    public @ResponseBody Owner deleteOwner(@RequestBody Owner owner) {
       return  ownerService.deleteOwnerInformation(owner);
     }
 
 
-    //join
-   /* @GetMapping(path = "find/{firstName}")
-    @ResponseBody
-    @ResponseStatus(HttpStatus.OK)
-    public Owner getOwnerLuggage(@PathVariable String firstName) {
-
-        return ownerService.findOwnerLuggage(firstName);
-
-    }*/
 
 }

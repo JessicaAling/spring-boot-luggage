@@ -73,11 +73,11 @@ public class AirportController {
     }
 
     //retrieves luggage by luggage id and by airport name
-    @GetMapping(path = "findLuggage/id/{id}/airportName/{name}")
+    @GetMapping(path = "findLuggage/id/{id}")
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
-    public List<Airport> findLuggageInAirportByName(@PathVariable int id,@PathVariable String name) throws AirportNotFoundException{
-        return airportService.findAllLuggageByAirportNameAndById(id,name);
+    public List<Airport> findLuggageInAirportByName(@PathVariable int id) throws AirportNotFoundException{
+        return airportService.findAllLuggageByAirportNameAndById(id);
     }
 
 }

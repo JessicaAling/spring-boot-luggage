@@ -1,6 +1,7 @@
 package com.luggage.service.luggageservice.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -8,29 +9,26 @@ import java.util.Objects;
 
 @Entity
 //@Table(name = "luggage")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Luggage {
 
     @Id
-    // @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="luggage_id")
     private Integer luggageId;
-    //ev ett till id?
-    @NotBlank
+
+    @NotBlank(message = "shelf can not be empty")
     private String shelf;
 
-    //String date;
     // private String dateAndTime;
 
-    //kan vara tom
     private String comment;
-
 
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="fk_airport_id")
     @JsonIgnore
     private Airport airport;
 
-    @ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne(fetch=FetchType.LAZY )
     @JoinColumn(name="fk_owner_id")
     @JsonIgnore
     private Owner luggageOwner;
@@ -41,7 +39,6 @@ public class Luggage {
 
     public Luggage(String shelf, String comment, Airport airport, Owner luggageOwner) {
         this.shelf = shelf;
-        //this.dateAndTime = dateAndTime;
         this.comment = comment;
         this.airport=airport;
         this.luggageOwner=luggageOwner;
@@ -62,14 +59,6 @@ public class Luggage {
     public void setShelf(String shelf) {
         this.shelf = shelf;
     }
-
-   /*public String getDateAndTime() {
-        return dateAndTime;
-    }
-
-    public void setDateAndTime(String dateAndTime) {
-        this.dateAndTime = dateAndTime;
-    }*/
 
     public String getComment() {
         return comment;

@@ -30,7 +30,4 @@ public interface LuggageRepository extends JpaRepository<Luggage, Integer> {
  @Query("SELECT l FROM Airport l inner join l.luggages al where al.id =:id")
  Optional<Luggage> findLuggageByAirport(@Param("id") Integer id);
 
-//eventuellt söka på airport name men den finns i airport
-
-
     }
